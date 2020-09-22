@@ -17,32 +17,98 @@
         room = await res.json();
         console.log(room);
     });
+
+    String.prototype.toColor = function() {
+        var colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
+                    '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                    '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
+                    '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                    '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
+                    '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                    '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
+                    '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                    '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
+                    '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+        
+        var hash = 0;
+        if (this.length === 0) return hash;
+        for (var i = 0; i < this.length; i++) {
+            hash = this.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
+        }
+        hash = ((hash % colors.length) + colors.length) % colors.length;
+        return colors[hash];
+    }
+
+    let nameInput = [];
+    let enabledInput;
     
     function selectVar(selected) {
         if (!room.teams[selected]) {
             room.teams[selected] = [];
         }
-        room.teams[selected][room.teams[selected].length] = "Толя";
-        console.log(room.teams[selected]);
+        if (nameInput[selected] !== "" && nameInput[selected] !== undefined) {
+            room.teams[selected][room.teams[selected].length] = nameInput[selected];
+            //room.teams[selected].push(nameInput[selected]);
+            var url = `http://localhost:3000/api/select/?id=${parsed.id}&name=${nameInput[selected]}&team=${selected}`;
+            fetch(url);
+            nameInput[selected] = "";
+        }
+    }
+
+    function selectInput(selected) {
+        enabledInput = selected;
+    }
+
+    let highlightedTeam, highlightedName;
+    function highlightName(name, i) {
+        if (i === highlightedTeam && name === highlightedName) {
+            highlightedTeam = undefined;
+            highlightedName = undefined;
+        } else {
+            highlightedTeam = i;
+            highlightedName = name;
+        }
+    }
+
+    function removeName() {
+        const index = room.teams[highlightedTeam].indexOf(highlightedName);
+        if (index > -1) {
+            room.teams[highlightedTeam].splice(index, 1);
+        }
+        var url = `http://localhost:3000/api/delete/?id=${parsed.id}&name=${highlightedName}&team=${highlightedTeam}`;
+        fetch(url);
     }
 </script>
 
 <svelte:head>
-	<title></title>
+	<title>Варианты</title>
 </svelte:head>
 
 <list>
     {#if room}
         <h1>{room.name}</h1>
+        <p class="subtext">По {room.group ? "бригадам" : "вариантам"}</p>
         <ol>
         {#each room.teams as _, i}
-            <li class={room.group==="true" ? "group" : "individual"} on:click={() => selectVar(i)}>
+            <li class={room.group === "true" ? "group" : "individual"} on:click={() => selectInput(i)} style="border-color: {enabledInput==i ? 'gray' : 'lightgray'}">
                 {#each room.teams[i] as name}
-                    <span class="name">{name}</span>
+                    <span class="name" style="background-color: {name.toColor()}" on:click={() => highlightName(name, i)}>
+                        {name}
+                        {#if (i === highlightedTeam && name === highlightedName)}
+                            <span class="deleteName" on:click={removeName}>×</span>
+                        {/if}
+                    </span>
                 {/each}
+                {#if room.teams[i].length == 0 || room.group == "true"}
+                    <input class="addName" type="button" value="+" on:click={() => selectVar(i)}>
+                    <input class="nameInput" type="text" bind:value={nameInput[i]}>
+                {/if}
             </li>
         {/each}
         </ol>
+
+        <span class="share-footer">Код подключения: <code>{parsed.id}</code></span>
     {:else}
         Loading...
     {/if}
@@ -51,6 +117,12 @@
 <style>
     h1 {
         font-weight: 100;
+        margin-bottom: 0px;
+    }
+
+    .subtext {
+        font-size: x-small;
+        margin-bottom: 50px;
     }
 
     list {
@@ -63,24 +135,62 @@
         list-style: none;
         counter-reset: item;
         font-size: larger;
+        margin-bottom: 50px;
     }
 
     li {
         text-align: left;
-        border-bottom: solid lightblue 1px;
+        border-bottom: solid lightgray 1px;
         counter-increment: item;
-        padding: 6px;
+        padding: 0px;
+        height: 2em;
         margin-bottom: 10px;
     }
 
     .name {
-        background-color: lightcoral;
         border-radius: 8px;
-        padding: 3px;
-        margin-right: 5px;
+        padding: 3px 8px 3px 8px;
+        margin: 0px 15px 0px 15px;
+        user-select: none;
+    }
+
+    .nameInput {
+        background-color: transparent;
+        margin: 0px;
+        padding: 0px;
+        border: none;
+        height: 2em;
+    }
+
+    .nameInput:focus {
+        outline: none;
+    }
+
+    .addName {
+        width: 1.2em;
+        height: 1.2em;
+        border-radius: 100%;
+        background-color: yellowgreen;
+        border: none;
+        padding: 0px;
+        text-align: center;
+        margin-right: 15px;
+        margin-left: 15px;
+    }
+
+    .deleteName {
+        display: inline-block;
+        margin-left: 6px;
+        transition-duration: 0.3s;
+        transition-property: transform;
+    }
+
+    .deleteName:hover {
+        transform: scale(1.2);
     }
 
     li:before {
+        margin-top: 8px;
         margin-right: 10px;
         content: counter(item);
         border-radius: 100%;
@@ -96,5 +206,22 @@
 
     .group:before {
         background-color: #f57323;
+    }
+
+    .share-footer {
+        text-align: center;
+        font-size: small;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+    code {
+        background-color: rgb(240, 240, 240);
+        border-radius: 3px;
+        padding: 3px 7px 3px 7px;
+        font-size: medium;
     }
 </style>

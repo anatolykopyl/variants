@@ -8,17 +8,20 @@
         window.location.href = url;
     }
 
+    let id;
+
     function connect() {
-        
+        const url=`http://localhost:3000/room/?id=${id}`;
+        window.location.href = url;
     }
 </script>
 
 <svelte:head>
-	<title>Varian.cc</title>
+	<title>Варианты</title>
 </svelte:head>
 
 <greeting>
-    <h1>varian.cc</h1>
+    <h1>Варианты</h1>
     <div class="startbtns">
         <div>
             <h2>Создать работу</h2>
@@ -47,7 +50,7 @@
             <div class="inputs">
                 <div>
                     Код подключения:<br>
-                    <input type="text" size="45" placeholder="43d0505c-d695-4323-9140-5d7744ec95e7">
+                    <input type="text" size="45" placeholder="43d0505c-d695-4323-9140-5d7744ec95e7" bind:value={id}>
                 </div>
                 <input type="button" value="Подключиться" on:click={connect}>
             </div>

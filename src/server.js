@@ -31,6 +31,7 @@ MongoClient.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true })
             next();
         });
 
+        // n, g, c
         app.get('/api/create/', (req, res) => {
             console.log(req.query);
             const id = uuidv4();
@@ -46,14 +47,34 @@ MongoClient.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true })
                 "teams": teams
             });
 
-            res.redirect(`http://localhost:3000/room/?id=${id}`);
+            res.redirect(`${process.env.URL}:3000/room/?id=${id}`);
         });
 
+        // id
         app.get('/api/join/', (req, res) => {
             rooms.findOne({ "id": req.query.id }).then(room => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.write(JSON.stringify(room));
                 res.end();
+            });
+        });
+
+        // id, team, name
+        app.get('/api/select/', (req, res) => {
+            rooms.findOne({ "id": req.query.id }).then(room => {
+                room.teams[req.query.team].push(req.query.name);
+                rooms.findOneAndReplace({ "id": req.query.id }, room).then(() => res.end());
+            });
+        });
+
+        // id, team, name
+        app.get('/api/delete/', (req, res) => {
+            rooms.findOne({ "id": req.query.id }).then(room => {
+                const index = room.teams[req.query.team].indexOf(req.query.name);
+                if (index > -1) {
+                    room.teams[req.query.team].splice(index, 1);
+                }
+                rooms.findOneAndReplace({ "id": req.query.id }, room).then(() => res.end());
             });
         });
 

@@ -10,13 +10,13 @@
     import { onMount } from 'svelte';
 
     let room;
-
-	onMount(async () => {
+    async function getRoom() {
         var url = `http://localhost:3000/api/join/?id=${parsed.id}`;
 		const res = await fetch(url);
         room = await res.json();
-        console.log(room);
-    });
+    }
+
+    onMount(async () => getRoom());
 
     String.prototype.toColor = function() {
         var colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
@@ -85,7 +85,7 @@
 <list>
     {#if room}
         <h1>{room.name}</h1>
-        <p class="subtext">По {room.group ? "бригадам" : "вариантам"}</p>
+        <p class="subtext">По {room.group == "true" ? "бригадам" : "вариантам"}</p>
         <ol>
         {#each room.teams as _, i}
             <li class={room.group === "true" ? "group" : "individual"} on:click={() => selectInput(i)} style="border-color: {enabledInput==i ? 'gray' : 'lightgray'}">

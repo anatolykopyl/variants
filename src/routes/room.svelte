@@ -72,10 +72,7 @@
     }
 
     function removeName() {
-        const index = room.teams[highlightedTeam].indexOf(highlightedName);
-        if (index > -1) {
-            room.teams[highlightedTeam].splice(index, 1);
-        }
+        room.teams[highlightedTeam] = room.teams[highlightedTeam].filter(n => n !== highlightedName);
         var url = `http://localhost:3000/api/delete/?id=${parsed.id}&name=${highlightedName}&team=${highlightedTeam}`;
         fetch(url);
     }
@@ -93,8 +90,8 @@
         {#each room.teams as _, i}
             <li class={room.group === "true" ? "group" : "individual"} on:click={() => selectInput(i)} style="border-color: {enabledInput==i ? 'gray' : 'lightgray'}">
                 {#each room.teams[i] as name}
-                    <span class="name" style="background-color: {name.toColor()}" on:click={() => highlightName(name, i)}>
-                        {name}
+                    <span class="name" style="background-color: {name.toColor()}">
+                        <span on:click={() => highlightName(name, i)}>{name}</span>
                         {#if (i === highlightedTeam && name === highlightedName)}
                             <span class="deleteName" on:click={removeName}>×</span>
                         {/if}
@@ -145,13 +142,13 @@
         padding: 0px;
         height: 2em;
         margin-bottom: 10px;
-        overflow: hidden;
+        overflow: scroll;
     }
 
     .name {
-        border-radius: 8px;
+        border-radius: 5px;
         padding: 3px 8px 3px 8px;
-        margin: 0px 15px 0px 15px;
+        margin: 0px 0px 0px 15px;
         user-select: none;
     }
 
@@ -195,12 +192,12 @@
         margin-right: 10px;
         content: counter(item);
         border-radius: 100%;
-        color: white;
         width: 1.2em;
         text-align: center;
         display: inline-block;
     }
 
+    /*
     .individual:before {
         background-color: #2196F3;
     }
@@ -208,6 +205,7 @@
     .group:before {
         background-color: #f57323;
     }
+    */
 
     @media only screen and (max-width: 1024px) {
         ol {

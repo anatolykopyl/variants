@@ -108,7 +108,7 @@
         {/each}
         </ol>
 
-        <span class="share-footer">Код подключения: <code>{parsed.id}</code></span>
+        <span class="footer">Код подключения: <code>{parsed.id}</code></span>
     {:else}
         Loading...
     {/if}
@@ -145,6 +145,7 @@
         padding: 0px;
         height: 2em;
         margin-bottom: 10px;
+        overflow: hidden;
     }
 
     .name {
@@ -208,20 +209,9 @@
         background-color: #f57323;
     }
 
-    .share-footer {
-        text-align: center;
-        font-size: small;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        padding-bottom: 10px;
-    }
-
-    code {
-        background-color: rgb(240, 240, 240);
-        border-radius: 3px;
-        padding: 3px 7px 3px 7px;
-        font-size: medium;
+    @media only screen and (max-width: 1024px) {
+        ol {
+            width: 90%;
+        }
     }
 </style>

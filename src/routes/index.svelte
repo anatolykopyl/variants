@@ -21,10 +21,11 @@
 </svelte:head>
 
 <greeting>
-    <h1>Варианты</h1>
     <div class="startbtns">
         <div>
-            <h2>Создать работу</h2>
+            <div class="cardHeader">
+                <h2>Создать работу</h2>
+            </div>
             <div class="inputs">
                 <div class="toggle">
                     По вариантам
@@ -34,25 +35,31 @@
                     </label>
                     По бригадам
                 </div>
-                <div>
-                    Количество {#if groupTask}бригад{:else}вариантов{/if}:
-                    <input type="number" id="varCount" name="варианты" min="2" max="50" bind:value={memberCount}>
-                </div>
-                <div>
+                <div class="inputWrap">
                     Название работы:<br>
                     <input type="text" size="45" placeholder="Лабораторная работа по физике №3" bind:value={name}>
                 </div>
-                <input type="button" value="Создать" on:click={createRoom}>
+                <div style="text-align: center;">
+                    <input type="number" id="varCount" name="варианты" min="2" max="50" bind:value={memberCount}>
+                    {#if groupTask}бригад{:else}вариантов{/if}
+                </div>
+                <span style="text-align: center;">
+                    <input class="btn" type="button" value="Создать" on:click={createRoom}>
+                </span>
             </div>
         </div>
         <div>
-            <h2>Присоедениться к работе</h2>
+            <div class="cardHeader">
+                <h2>Присоедениться к работе</h2>
+            </div>
             <div class="inputs">
-                <div>
+                <div class="inputWrap">
                     Код подключения:<br>
                     <input type="text" size="45" placeholder="43d0505c-d695-4323-9140-5d7744ec95e7" bind:value={id}>
                 </div>
-                <input type="button" value="Подключиться" on:click={connect}>
+                <span style="text-align: center;">
+                    <input class="btn" type="button" value="Подключиться" on:click={connect}>
+                </span>
             </div>
         </div>
     </div>
@@ -63,10 +70,25 @@
 		text-align: center;
 	}
 
+    .inputWrap {
+        display: table;
+    }
+
+    .inputWrap > input {
+        display:table-cell; 
+        width:100%;
+    }
+
+    .btn {
+        width: 15ch;
+    }
+
     .startbtns {
         display: flex;
         justify-content: space-evenly;
         justify-items: center;
+        flex-wrap: wrap;
+        margin-top: 18vh;
     }
 
     .startbtns > div {
@@ -74,7 +96,18 @@
         box-shadow: lightgrey 0px 5px 20px;
         width: 30vw;
         height: 30vw;
-        padding: 2vw;
+        margin-bottom: 10vw;
+    }
+
+    .cardHeader {
+        background-color: rgb(240, 240, 240);
+        border-radius: 8px 8px 0px 0px;
+        width: 100%;
+        height: 16%;
+        margin-bottom: 2vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     h1 {
@@ -84,7 +117,8 @@
     }
 
     h2 {
-        padding-bottom: 1em;
+        margin: 0px;
+        font-weight: 100;
     }
 
     .inputs {
@@ -163,5 +197,12 @@
 
     .slider.round:before {
         border-radius: 50%;
+    }
+
+    @media only screen and (max-width: 1024px) {
+        .startbtns > div {
+            width: 70vw;
+            height: 70vw;
+        }
     }
 </style>

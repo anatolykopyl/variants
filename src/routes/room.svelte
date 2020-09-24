@@ -142,7 +142,7 @@
         padding: 0px;
         height: 2em;
         margin-bottom: 10px;
-        overflow: scroll;
+        white-space: nowrap;
     }
 
     .name {
@@ -158,6 +158,7 @@
         padding: 0px;
         border: none;
         height: 2em;
+        width: 100%;
     }
 
     .nameInput:focus {

@@ -14,6 +14,10 @@
         const url=`http://localhost:3000/room/?id=${id}`;
         window.location.href = url;
     }
+
+    const plcType = ['Лабораторная работа', 'Лаба', 'Практическая работа', 'Практика', 'Лабораторная', 'Доклад'];
+    const plcSubj = ['физике', 'химии', 'философии'];
+    const plcName = `${plcType[Math.floor(Math.random()*plcType.length)]} по ${plcSubj[Math.floor(Math.random()*plcSubj.length)]} № ${Math.floor(Math.random()*12)+1}`;
 </script>
 
 <svelte:head>
@@ -37,7 +41,7 @@
                 </div>
                 <div class="inputWrap">
                     Название работы:<br>
-                    <input type="text" size="45" placeholder="Лабораторная работа по физике №3" bind:value={name}>
+                    <input type="text" size="45" placeholder={plcName} bind:value={name}>
                 </div>
                 <div style="text-align: center;">
                     <input type="number" id="varCount" name="варианты" min="2" max="50" bind:value={memberCount}>
@@ -75,8 +79,8 @@
     }
 
     .inputWrap > input {
-        display:table-cell; 
-        width:100%;
+        display: table-cell; 
+        width: 100%;
     }
 
     .btn {
@@ -123,7 +127,7 @@
 
     .inputs {
         display: flex;
-        height: 75%;
+        height: 70%;
         margin-left: 5%;
         margin-right: 5%;
         flex-direction: column;
@@ -177,11 +181,11 @@
     }
 
     input:checked + .slider {
-        background-color: #f57323;
+        background-color: #3fc53b;
     }
 
     input:focus + .slider {
-        box-shadow: 0 0 1px #f57323;
+        box-shadow: 0 0 1px #3fc53b;
     }
 
     input:checked + .slider:before {

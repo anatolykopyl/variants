@@ -4,14 +4,14 @@
     let memberCount = 10;
     
     function createRoom() {
-        const url=`http://localhost:3000/api/create/?g=${groupTask}&n=${name}&c=${memberCount}`;
+        const url=`${process.env.URL}/api/create/?g=${groupTask}&n=${name}&c=${memberCount}`;
         window.location.href = url;
     }
 
     let id;
 
     function connect() {
-        const url=`http://localhost:3000/room/?id=${id}`;
+        const url=`${process.env.URL}/room/?id=${id}`;
         window.location.href = url;
     }
 
@@ -114,12 +114,6 @@
         justify-content: center;
     }
 
-    h1 {
-        font-size: xx-large;
-        font-weight: 100;
-        text-transform: uppercase;
-    }
-
     h2 {
         margin: 0px;
         font-weight: 100;
@@ -205,8 +199,15 @@
 
     @media only screen and (max-width: 1024px) {
         .startbtns > div {
-            width: 70vw;
-            height: 70vw;
+            width: 80vw;
+            height: 80vw;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .startbtns > div {
+            width: 97vw;
+            height: 97vw;
         }
     }
 </style>

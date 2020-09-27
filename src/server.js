@@ -47,7 +47,7 @@ MongoClient.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true })
                 "teams": teams
             });
 
-            res.redirect(`${process.env.URL}:3000/room/?id=${id}`);
+            res.redirect(`${process.env.URL}/room/?id=${id}`);
         });
 
         // id

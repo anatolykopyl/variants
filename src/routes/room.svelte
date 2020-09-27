@@ -11,7 +11,7 @@
 
     let room;
     async function getRoom() {
-        var url = `http://localhost:3000/api/join/?id=${parsed.id}`;
+        var url = `${process.env.URL}/api/join/?id=${parsed.id}`;
 		const res = await fetch(url);
         room = await res.json();
     }
@@ -50,7 +50,7 @@
         if (nameInput[selected] !== "" && nameInput[selected] !== undefined) {
             room.teams[selected][room.teams[selected].length] = nameInput[selected];
             //room.teams[selected].push(nameInput[selected]);
-            var url = `http://localhost:3000/api/select/?id=${parsed.id}&name=${nameInput[selected]}&team=${selected}`;
+            var url = `${process.env.URL}/api/select/?id=${parsed.id}&name=${nameInput[selected]}&team=${selected}`;
             fetch(url);
             nameInput[selected] = "";
         }
@@ -73,7 +73,7 @@
 
     function removeName() {
         room.teams[highlightedTeam] = room.teams[highlightedTeam].filter(n => n !== highlightedName);
-        var url = `http://localhost:3000/api/delete/?id=${parsed.id}&name=${highlightedName}&team=${highlightedTeam}`;
+        var url = `${process.env.URL}/api/delete/?id=${parsed.id}&name=${highlightedName}&team=${highlightedTeam}`;
         fetch(url);
     }
 </script>

@@ -9,10 +9,15 @@
     }
 
     let id;
+    let invalidId = false;
 
     function connect() {
-        const url=`${process.env.URL}/room/?id=${id}`;
-        window.location.href = url;
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+            const url=`${process.env.URL}/room/?id=${id}`;
+            window.location.href = url;
+        } else {
+            invalidId = true;
+        }
     }
 
     const plcType = ['Лабораторная работа', 'Лаба', 'Практическая работа', 'Практика', 'Лабораторная', 'Доклад'];
@@ -60,6 +65,7 @@
                 <div class="inputWrap">
                     Код подключения:<br>
                     <input type="text" size="45" placeholder="43d0505c-d695-4323-9140-5d7744ec95e7" bind:value={id}>
+                    {#if invalidId}<span class="error-hint">Неверный формат кода :(</span>{/if}
                 </div>
                 <span style="text-align: center;">
                     <input class="btn" type="button" value="Подключиться" on:click={connect}>
@@ -81,6 +87,10 @@
     .inputWrap > input {
         display: table-cell; 
         width: 100%;
+    }
+
+    .error-hint {
+        color: indianred;
     }
 
     .btn {

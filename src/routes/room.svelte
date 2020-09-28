@@ -10,9 +10,10 @@
     import { onMount } from 'svelte';
 
     let room;
+    let res;
     async function getRoom() {
         var url = `${process.env.URL}/api/join/?id=${parsed.id}`;
-		const res = await fetch(url);
+		res = await fetch(url);
         room = await res.json();
     }
 
@@ -106,8 +107,14 @@
         </ol>
 
         <span class="footer">Код подключения: <code>{parsed.id}</code></span>
-    {:else}
-        Loading...
+    {:else if res==undefined}
+        <div class="status">Загрузка...</div>
+    {:else if res.status==404}
+        <div class="status">
+            <h1>404</h1>
+            Такой комнаты не существует :(<br>
+            <a href={process.env.URL}>Вернуться на главную</a>
+        </div>
     {/if}
 </list>
 
@@ -198,15 +205,16 @@
         display: inline-block;
     }
 
-    /*
-    .individual:before {
-        background-color: #2196F3;
+    .status {
+        width: 100%;
+        text-align: center;
+        margin-top: 250px;
     }
 
-    .group:before {
-        background-color: #f57323;
+    .status > h1 {
+        font-size: 128px;
+        font-weight: bold;
     }
-    */
 
     @media only screen and (max-width: 1024px) {
         ol {

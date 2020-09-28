@@ -53,8 +53,12 @@ MongoClient.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true })
         // id
         app.get('/api/join/', (req, res) => {
             rooms.findOne({ "id": req.query.id }).then(room => {
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.write(JSON.stringify(room));
+                if (room !== null) {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.write(JSON.stringify(room));
+                } else {
+                    res.writeHead(404, { 'Content-Type': 'application/json' });
+                }
                 res.end();
             });
         });

@@ -208,6 +208,10 @@
     }
 
     @media only screen and (max-width: 1024px) {
+        .startbtns {
+            margin-top: 2vh;
+        }
+
         .startbtns > div {
             width: 80vw;
             height: 80vw;
@@ -215,6 +219,10 @@
     }
 
     @media only screen and (max-width: 480px) {
+        .startbtns {
+            margin-top: 0px;
+        }
+
         .startbtns > div {
             width: 97vw;
             height: 97vw;

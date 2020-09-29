@@ -218,7 +218,9 @@
 
     @media only screen and (max-width: 1024px) {
         ol {
-            width: 90%;
+            width: 100%;
+            margin: 0px 0px 50px 0px;
+            padding: 0px;
         }
     }
 </style>

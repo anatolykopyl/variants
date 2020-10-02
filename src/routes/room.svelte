@@ -44,16 +44,18 @@
     let nameInput = [];
     let enabledInput;
     
-    function selectVar(selected) {
-        if (!room.teams[selected]) {
-            room.teams[selected] = [];
-        }
-        if (nameInput[selected] !== "" && nameInput[selected] !== undefined) {
-            room.teams[selected][room.teams[selected].length] = nameInput[selected];
-            //room.teams[selected].push(nameInput[selected]);
-            var url = `${process.env.URL}/api/select/?id=${parsed.id}&name=${nameInput[selected]}&team=${selected}`;
-            fetch(url);
-            nameInput[selected] = "";
+    function selectVar(selected, event) {
+        if (!event || event && event.keyCode === 13) {
+            if (!room.teams[selected]) {
+                room.teams[selected] = [];
+            }
+            if (nameInput[selected] !== "" && nameInput[selected] !== undefined) {
+                room.teams[selected][room.teams[selected].length] = nameInput[selected];
+                //room.teams[selected].push(nameInput[selected]);
+                var url = `${process.env.URL}/api/select/?id=${parsed.id}&name=${nameInput[selected]}&team=${selected}`;
+                fetch(url);
+                nameInput[selected] = "";
+            }
         }
     }
 
@@ -85,6 +87,7 @@
 
 <list>
     {#if room}
+        <div class="exit"><a href={process.env.URL}>Вернуться на главную</a></div>
         <h1>{room.name}</h1>
         <p class="subtext">По {room.group == "true" ? "бригадам" : "вариантам"}</p>
         <ol>
@@ -100,7 +103,7 @@
                 {/each}
                 {#if room.teams[i].length == 0 || room.group == "true"}
                     <input class="addName" type="button" value="+" on:click={() => selectVar(i)}>
-                    <input class="nameInput" type="text" bind:value={nameInput[i]}>
+                    <input class="nameInput" type="text" bind:value={nameInput[i]} on:keyup={(event) => selectVar(i, event)}>
                 {/if}
             </li>
         {/each}
@@ -122,6 +125,14 @@
     h1 {
         font-weight: 100;
         margin-bottom: 0px;
+    }
+
+    .exit {
+        height: 0px;
+        width: 100%;
+        text-align: left;
+        font-size: small;
+        cursor: pointer;
     }
 
     .subtext {
@@ -182,6 +193,7 @@
         text-align: center;
         margin-right: 15px;
         margin-left: 15px;
+        cursor: pointer;
     }
 
     .deleteName {

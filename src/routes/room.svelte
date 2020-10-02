@@ -82,7 +82,7 @@
 </script>
 
 <svelte:head>
-	<title>Варианты</title>
+	<title>{room && room.name ? room.name : 'Study Buddy'}</title>
 </svelte:head>
 
 <list>

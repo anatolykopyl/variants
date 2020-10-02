@@ -1,6 +1,6 @@
 {
-  "name": "variancc",
-  "description": "Variancc",
+  "name": "variants",
+  "description": "An app for splitting a group of people into subgroups.",
   "version": "0.0.1",
   "repository": {
     "type": "git",

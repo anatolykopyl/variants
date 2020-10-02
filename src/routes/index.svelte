@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-	<title>Варианты</title>
+	<title>Study Buddy</title>
 </svelte:head>
 
 <greeting>

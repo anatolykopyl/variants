@@ -64,7 +64,7 @@
         </div>
         <div>
             <div class="cardHeader">
-                <h2>Присоедениться к работе</h2>
+                <h2>Присоединиться к работе</h2>
             </div>
             <div class="inputs">
                 <div class="inputWrap">

@@ -168,6 +168,7 @@
         padding: 3px 8px 3px 8px;
         margin: 0px 0px 0px 15px;
         user-select: none;
+        cursor: pointer;
     }
 
     .nameInput {

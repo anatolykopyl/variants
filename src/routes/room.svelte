@@ -80,7 +80,6 @@
 </script>
 
 <svelte:head>
-    <meta property="og:title" content={room && room.name ? room.name : 'Study Buddy'}>
 	<title>{room && room.name ? room.name : 'Study Buddy'}</title>
 </svelte:head>
 

@@ -107,7 +107,12 @@
         {/each}
         </ol>
 
-        <span class="footer">Код подключения: <code>{parsed.id}</code></span>
+        <span class="footer">
+            Код подключения: <code>{parsed.id}</code>
+            <a href="https://github.com/anatolykopyl/variants">
+                <img src="/github.png" alt="github" class="githubLink">
+            </a>
+        </span>
     {:else if res==undefined}
         <div class="status">Загрузка...</div>
     {:else if res.status==404}
@@ -148,7 +153,7 @@
         list-style: none;
         counter-reset: item;
         font-size: larger;
-        margin-bottom: 50px;
+        padding-bottom: 100px;
     }
 
     li {
@@ -227,11 +232,21 @@
         font-weight: bold;
     }
 
+    .footer > a {
+        margin-left: 16px;
+    }
+
+    .githubLink {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+
     @media only screen and (max-width: 1024px) {
         ol {
             width: 100%;
-            margin: 0px 0px 50px 0px;
-            padding: 0px;
+            margin: 0 0 50px 0;
+            padding: 0 0 50px 0;
         }
     }
 </style>

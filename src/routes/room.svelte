@@ -85,34 +85,38 @@
 
 <list>
     {#if room}
-        <div class="exit"><a href={process.env.URL}>Вернуться на главную</a></div>
-        <h1>{room.name}</h1>
-        <p class="subtext">По {room.group == "true" ? "бригадам" : "вариантам"}</p>
-        <ol>
-        {#each room.teams as _, i}
-            <li class={room.group === "true" ? "group" : "individual"} on:click={() => selectInput(i)} style="border-color: {enabledInput==i ? 'gray' : 'lightgray'}">
-                {#each room.teams[i] as name}
-                    <span class="name" style="background-color: {name.toColor()}">
-                        <span on:click={() => highlightName(name, i)}>{name}</span>
-                        {#if (i === highlightedTeam && name === highlightedName)}
-                            <span class="deleteName" on:click={removeName}>×</span>
+        <div class="page-wrapper">
+            <div>
+                <div class="exit"><a href={process.env.URL}>Вернуться на главную</a></div>
+                <h1>{room.name}</h1>
+                <p class="subtext">По {room.group == "true" ? "бригадам" : "вариантам"}</p>
+                <ol>
+                {#each room.teams as _, i}
+                    <li class={room.group === "true" ? "group" : "individual"} on:click={() => selectInput(i)} style="border-color: {enabledInput==i ? 'gray' : 'lightgray'}">
+                        {#each room.teams[i] as name}
+                            <span class="name" style="background-color: {name.toColor()}">
+                                <span on:click={() => highlightName(name, i)}>{name}</span>
+                                {#if (i === highlightedTeam && name === highlightedName)}
+                                    <span class="deleteName" on:click={removeName}>×</span>
+                                {/if}
+                            </span>
+                        {/each}
+                        {#if room.teams[i].length == 0 || room.group == "true"}
+                            <img src="/plus.svg" alt="plus" class="addName" on:click={() => selectVar(i)} />
+                            <input class="nameInput" type="text" bind:value={nameInput[i]} on:keyup={(event) => selectVar(i, event)}>
                         {/if}
-                    </span>
+                    </li>
                 {/each}
-                {#if room.teams[i].length == 0 || room.group == "true"}
-                    <input class="addName" type="button" value="+" on:click={() => selectVar(i)}>
-                    <input class="nameInput" type="text" bind:value={nameInput[i]} on:keyup={(event) => selectVar(i, event)}>
-                {/if}
-            </li>
-        {/each}
-        </ol>
+                </ol>
+            </div>
 
-        <span class="footer">
-            Код подключения: <code>{parsed.id}</code>
-            <a href="https://github.com/anatolykopyl/variants">
-                <img src="/github.png" alt="github" class="githubLink">
-            </a>
-        </span>
+            <div class="footer">
+                Код подключения: <code>{parsed.id}</code>
+                <a href="https://github.com/anatolykopyl/variants">
+                    <img src="/github.png" alt="github" class="githubLink">
+                </a>
+            </div>
+        </div>
     {:else if res==undefined}
         <div class="status">Загрузка...</div>
     {:else if res.status==404}
@@ -125,9 +129,20 @@
 </list>
 
 <style>
+    list {
+        position: relative;
+    }
+
     h1 {
         font-weight: 100;
         margin-bottom: 0px;
+    }
+
+    .page-wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .exit {
@@ -191,6 +206,7 @@
         width: 1.2em;
         height: 1.2em;
         border-radius: 100%;
+        color: black;
         background-color: yellowgreen;
         border: none;
         padding: 0px;

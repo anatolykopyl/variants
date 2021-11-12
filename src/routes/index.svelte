@@ -107,7 +107,8 @@
         justify-content: space-evenly;
         justify-items: center;
         flex-wrap: wrap;
-        margin-top: 18vh;
+        align-items: center;
+        height: 100%;
     }
 
     .startbtns > div {

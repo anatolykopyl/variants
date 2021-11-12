@@ -1,6 +1,10 @@
-html, body, #sapper {
+html, body {
 	position: relative;
 	width: 100%;
+	height: 100%;
+}
+
+#sapper {
 	height: 100%;
 }
 
